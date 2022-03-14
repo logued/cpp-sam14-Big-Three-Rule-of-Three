@@ -41,14 +41,14 @@ Classes that use dynamically allocated memory data members (fields)
 #include<iostream> 
 using namespace std;
 
-class Student
+class Student       // Student class defined in same file here for ease of reading
 {
 private:
 	string name;
 	double* location;	// GPS location , using array of two double values, latitude and longitude
 
 		// Note: Dynamically allocated memory used here for demonstration purposes
-		// A standard array could be used for the location as it doesnt change.
+		// A standard array could be used for the location as it doesn't change.
 public:
 	Student(string name, double latitude, double longitude) {
 		this->name = name;
@@ -161,8 +161,12 @@ int main()
 	Student* pStudent = new Student("Jane", 54.10324, -6.41667);  // dynamically allocate object
 
 	pStudent->printStudent();
-	delete pStudent;		// free up dynamically allocated student
+	delete pStudent;		// free up dynamically allocated student, destructor is called
 	pStudent = nullptr;
+
+    // On return , the Students objects that were automatically created on the stack
+    // are now automatically removed from the stack. The destructor for each Student
+    // object is called just before it is removed.
 
 	return 0;
 
