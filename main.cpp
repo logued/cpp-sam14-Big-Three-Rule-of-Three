@@ -16,7 +16,7 @@ Classes that use dynamically allocated memory data members (fields)
  The problem with this is, that, if one or more source fields are pointers, then
  it is the value(address) in the pointer that is copied, and we end up with the source and
  destination pointers both containing the same address values, and thus, both
- will be pointing at the SAME object in Heap memory.  
+ will be pointing at the SAME object in Heap memory.
  
  Usually, we don't want this, and instead, we want each object to have its own copy 
  of the object pointed to. Therefore, our Copy Constructor must dynamically allocate 
@@ -25,13 +25,13 @@ Classes that use dynamically allocated memory data members (fields)
  Destructor.  In C++, when an object goes out of scope, its destructor is called.
  If there are no pointer fields in the class than we do not need to implement
  anything in the destructor.
- If there ar epointer fields (data members) adn if they have been assigned
- dunamically allocated memory blocks, then we must call the delete or delete[] 
- commands to free up the dynamic memory owned by the object.
+ If there are pointer fields (data members) adn if they have been assigned
+ dynamically allocated memory blocks, then we must call "delete" or "delete[]"
+ to free up the dynamic memory owned by the object.
  If we do not free up this memory, a memory leak will occur.
 
  Overloaded assignment "operator="
- If we assign one object to another and there are no pointer fields, then field 
+ If we assign one object to another, and there are no pointer fields, then field
  values are copied across directly (a 'bitwise copy' ). If the objects have
  pointer fields, then we need to dynamically allocate a new block of memory to store
  the destination object, and copy the data from the source memory block
@@ -166,6 +166,6 @@ int main()
 
 	return 0;
 
-	// 2Do - study the output, and note the calls to the destructor ~dtudent() as each 
-	// object goes out of scope.
+	//TODO - study the output, and note the calls to the destructor ~Student() as each
+	// object goes out of scope. Can you account for each destructor call.
 }
