@@ -16,7 +16,7 @@ RULE:  (The Rule of Three)
  fields into the destination fields.
 
  The problem with this is, that, if one or more source fields
- are pointers, then it is the value(address) in the pointer
+ are pointers, then it is the value(address) in the pointer field
  that is copied, and we end up with the source and
  destination pointers both containing the same address values,
  and thus, both will be pointing at the SAME dynamic memory
@@ -25,15 +25,15 @@ RULE:  (The Rule of Three)
  
  Usually, we don't want this, and instead, we want each object to
  have its own copy of the object pointed to. Therefore, we must write
- a Copy Constructor in teh destination object, that will dynamically
+ a Copy Constructor in the class, that will dynamically
  allocate its own block of memory to store a copy of the dynamically
  allocated data in the source object.
 
  Destructor.
  In C++, when an object goes out of scope, its destructor is called.
  If there are no pointer fields in the class than we do not need to
- implement anything in the destructor.
- If there are pointer fields, and if they have been assigned
+ implement anything in the destructor. (as there is no memory to free up).
+ If there are pointer fields, and if they have been assigned addresses of
  dynamically allocated memory, then we must call "delete" or "delete[]"
  from the Destructor to free up that dynamic memory.
  If we do not free up this memory, a memory leak will occur.
@@ -42,8 +42,8 @@ RULE:  (The Rule of Three)
  If we assign one object to another, and there are no pointer fields,
  then field values are copied across directly (a 'bitwise copy').
  If the objects have pointer fields, then we need to copy the data
- from the source dynamic memory block to the destination
- dynamic memory block of memory. (Sometimes it may be necessary to
+ from the source object to the destination object.
+ (Sometimes,  it may be necessary to
  allocate memory in the destination, if it doesn't already exist)
   
  */
@@ -77,12 +77,16 @@ public:
 		this->location[1] = 0.0;
 	}
 
-	// Copy constructor 
-	// Copies the fields from the source object into this object 
-	// i.e the object being created.
+	// Copy constructor
+    // Accepts one Student object as a parameter (the source) and
+    // copies the data from the source into the Student object
+    // being constructed (the destination).
+    // If the source contains data in dynamically allocated memory (on Heap) then
+    // new memory must be allocated in the destination object to store that data.
+    //
 	Student(const Student& source)
 	{
-		cout << "Copy constructor called. " << endl;
+		cout << "Student copy constructor called." << endl;
 		this->name = source.name;  
 
 		this->location = new double[2];	// dynamically allocate a new block of memory 
@@ -105,15 +109,24 @@ public:
 	// When each Student object goes out of scope, or is deleted, 
 	// its destructor is called.
 	// This is your chance to delete any dynamically allocated memory that 
-	// has been allocated by this object. 
-
+	// has been allocated by this object. Omitting this will cause memory leaks.
+    //
 	~Student() {
-		cout << "Destructor ~Student called." << endl;
-		delete[] this->location;  // delete the array of doubles we allocated dynamically in the constructor
-							// if deleting only a single object, then leave out the brackets []
+		cout << "Destructor ~Student() called." << endl;
+
+        // delete the array of doubles we allocated dynamically in the constructor
+		delete [] this->location;
+
+        // If deleting only a single object, then leave out the brackets []
 	}
 
-	// Overloaded assignment operator=
+	// Overloaded assignment "operator="
+    // This is invoked (called) when one student object is assigned to another
+    // e.g. student1 = student2;
+    // Again, its purpose is to ensure that data stored in dynamically allocated memory (on Heap)
+    // belonging to the source object, is properly copied to dynamically allocated memory
+    // belonging to the destination object.
+    //
 	Student& operator= (const Student& otherStudent)
 	{
 		cout << "Overloaded assignment operator= called." << endl;
@@ -122,20 +135,19 @@ public:
 		if (this == &otherStudent)
 			return *this;			// reference to same object
 
-		// copy data from the source (rhs) to this object (the destination) lhs
+		// copy data from the source (rhs) to this object - the destination (lhs)
 		this->name = otherStudent.name;
 
 		// must make a new location object to store a copy of other student location
-
 		if (this->location == nullptr)		// allocate memory if it doesn't already exist
 			this->location = new double[2];
 
 		for (int i = 0; i < 2; i++) {
-			this->location[i] = otherStudent.location[i];  // copy over the 2 location values
+			this->location[i] = otherStudent.location[i];  // copy the 2 location values
 		}
 
-		// return the existing object so we can 'chain' this operator
-		return *this;
+		// return this new object so that we can 'chain' this operator (e.g. "s1=s2=s3")
+		return *this;   // returns this Student object
 	}
 };
 
@@ -155,7 +167,7 @@ int main()
 	cout << "s1 = ";
 	s1.printStudent();
 
-	Student s3 = s1; // also calls copy constructor
+	Student s3 = s1; // also calls copy constructor (and NOT the assignment operator !!)
 	cout << "s3 = ";
 	s3.printStudent();
 
@@ -164,12 +176,13 @@ int main()
 	cout << "s4 = ";
 	s4.printStudent();
 
-	// chaining of assignments is allowed (this is why we return "*this" from overloaded operator=)
+	// chaining of assignments is allowed (this is why we return "*this" from overloaded "operator=" )
 	// s4 = s3 = s2 = s1;  // sets them all to value of s1
 
 	Student* pStudent = new Student("Jane", 54.10324, -6.41667);  // dynamically allocate object
 
 	pStudent->printStudent();
+
 	delete pStudent;		// free up dynamically allocated student, destructor is called
 	pStudent = nullptr;
 
