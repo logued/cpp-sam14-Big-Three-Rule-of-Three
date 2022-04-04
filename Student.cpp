@@ -120,13 +120,15 @@ ostream& operator<< (ostream& out, const Student& student)
     return out;
 }
 
-/* The extraction "operator>>"  is invoked by the following pattern
-   "  inputStream >> Student     "
 
-*/
 
 istream& operator>> (istream& in, Student& student)
 {
-    cout << "extraction operator not implemented yet";
-
+    cout << "Enter student name: ";
+    cin >> student.name;
+    cout << "Enter location latitude: ";
+    cin >> student.location[0];
+    cout << "Enter location longitude: ";
+    cin >> student.location[1];
+    cout << endl;
 }

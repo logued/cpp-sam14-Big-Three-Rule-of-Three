@@ -80,11 +80,19 @@ int main()
 	// chaining of assignments is allowed (this is why we return "*this" from the overloaded "operator=" )
 	// s4 = s3 = s2 = s1;  // sets them all to value of s1
 
+    cout << "Using stream insertion operator>> for Student:";
+    Student s5;
+    cin >> s5;
+    cout << "Print s5:\n " << s5 << endl;
+
 	Student* pStudent = new Student("Jane", 54.10324, -6.41667);  // dynamically allocate object
 
 	pStudent->printStudent();
 
-	delete pStudent;		// free up dynamically allocated student, destructor is called
+    cout << "Print the dynamically allocate student using *pStudent: " << *pStudent << endl;
+
+	delete pStudent;	// free up dynamically allocated student,
+                        // ~Student() destructor is called when we delete the student memory
 	pStudent = nullptr;
 
     // On return , the Students objects that were automatically created on the stack
