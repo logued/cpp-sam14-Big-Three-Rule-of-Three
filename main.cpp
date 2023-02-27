@@ -1,4 +1,4 @@
-/* Student Class				April 2022
+/* Student Class	Feb 2023
 
 Rule of Three (the Big Three) - (now the Big Five with Modern C++)
 

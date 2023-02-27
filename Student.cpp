@@ -1,5 +1,5 @@
 //
-//  Rule of Three       --       April 2022
+//  Rule of Three       --      Feb 2022
 //
 
 #include "Student.h"
@@ -35,7 +35,7 @@ Student::Student()    // default constructor
 //
 Student::Student(const Student &source) {
     cout << "... Student Copy Constructor was called." << endl;
-    this->name = source.name;
+    this->name = source.name;   // copy from source student, to this student
 
     this->location = new double[2];    // dynamically allocate a new block of memory
     // to hold a copy of the location data
@@ -54,10 +54,11 @@ void Student::setLocation(double latitude, double longitude) {
 }
 
 // Destructor.
-// When each Student object goes out of scope, or is deleted,
+// When a Student object goes out of scope, or is deleted,
 // its destructor is called.
 // This is your chance to delete any dynamically allocated memory that
-// has been allocated by this object. Omitting this will cause memory leaks.
+// has been allocated by this object.
+// Forgetting to delete Dynamically Allocated Memory this will cause memory leaks.
 //
 Student::~Student() {
     cout << "... Student Destructor ~Student() was called." << endl;
@@ -66,6 +67,7 @@ Student::~Student() {
     delete[] this->location;
 
     // If deleting only a single object, then leave out the brackets []
+    // However, here we delete an array of two doubles.
 }
 
 // Overloaded assignment "operator="
@@ -73,7 +75,7 @@ Student::~Student() {
 // e.g. student1 = student2;
 // Again, its purpose is to ensure that data stored in dynamically allocated memory (on Heap)
 // belonging to the source object, is properly copied to dynamically allocated memory
-// belonging to the destination object.
+// belonging to the destination object. It implements a Deep Copy of the data object's data.
 //
 Student &Student::operator=(const Student &otherStudent) {
     cout << "... Student Overloaded assignment operator= was called." << endl;
@@ -119,8 +121,6 @@ ostream& operator<< (ostream& out, const Student& student)
 
     return out;
 }
-
-
 
 istream& operator>> (istream& in, Student& student)
 {

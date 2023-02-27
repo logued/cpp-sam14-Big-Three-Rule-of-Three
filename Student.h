@@ -1,5 +1,5 @@
 //
-// April 2022
+// Feb 2022
 //
 
 #ifndef SAM14_BIG_THREE_STUDENT_H
@@ -12,29 +12,25 @@ class Student       // Student class defined in same file here for ease of readi
 {
 private:
     std::string name;
-    double* location;	// GPS location , using array of two double values, latitude and longitude
+    double* location;	// GPS location, using array of two double values, latitude and longitude
 
-    // Note: Dynamically allocated memory used here for demonstration purposes.
-    // A standard array could be used for the location as it doesn't change in size.
+    // Note: Dynamically allocated memory used here for purpose of illustrating concepts.
+    // (A standard array could be used for the location as it doesn't change in size.)
 
 public:
 
-    Student(std::string name, double latitude, double longitude) ;
+    // 'Normal' constructors
+    Student(std::string name, double latitude, double longitude);
+    Student();	// default, no-argument constructor
 
-    Student();	// default constructor
-
-    // Copy constructor
+    // Copy Constructor.
     // Accepts one Student object as a parameter (the source) and
     // copies the data from the source into the Student object
     // being constructed (the destination).
     // If the source contains data in dynamically allocated memory (on Heap) then
     // new memory must be allocated in the destination object to store that data.
     //
-    Student(const Student& source);
-
-    void printStudent() ;
-
-    void setLocation(double latitude, double longitude) ;
+    Student(const Student& source); // COPY CONSTRUCTOR
 
     // Destructor.
     // When each Student object goes out of scope, or is deleted,
@@ -42,16 +38,16 @@ public:
     // This is your chance to delete any dynamically allocated memory that
     // has been allocated by this object. Omitting this will cause memory leaks.
     //
-    ~Student() ;
+    ~Student() ;        // DESTRUCTOR
 
-    // Overloaded assignment "operator="
+    // Overloaded Assignment Operator "operator="
     // This is invoked (called) when one student object is assigned to another
     // e.g. student1 = student2;
     // Again, its purpose is to ensure that data stored in dynamically allocated memory (on Heap)
     // belonging to the source object, is properly copied to dynamically allocated memory
     // belonging to the destination object.
     //
-    Student& operator= (const Student& otherStudent);
+    Student& operator= (const Student& otherStudent); // OVERLOADED ASSIGNMENT Operator
 
     // Declaring overloaded global extraction >> and insertion << operators
     // These are NOT member functions (as they don't have the "Student::" scope resolution
@@ -62,6 +58,10 @@ public:
     friend std::ostream& operator << (std::ostream& out, const Student& c); // insertion operator
 
     friend std::istream& operator >> (std::istream& in, Student& c);        // extraction operator
+
+    void printStudent() ;
+
+    void setLocation(double latitude, double longitude) ;
 
 };
 
