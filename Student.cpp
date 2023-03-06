@@ -21,7 +21,6 @@ Student::Student()    // default constructor
 {
     this->name = "John Doe";
     this->location = new double[2];    // dynamically allocate an array of 2 doubles from the Heap
-    // (could also be a class object or any resource)
     this->location[0] = 0.0;
     this->location[1] = 0.0;
 }
@@ -29,7 +28,7 @@ Student::Student()    // default constructor
 // Copy constructor
 // Accepts one Student object as a parameter (the source) and
 // copies the data from the source into the Student object
-// being constructed (the destination).
+// being constructed (the destination) i.e. "this" one
 // If the source contains data in dynamically allocated memory (on Heap) then
 // new memory must be allocated in the destination object to store that data.
 //

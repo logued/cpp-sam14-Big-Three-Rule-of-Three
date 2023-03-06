@@ -1,5 +1,5 @@
 //
-// Feb 2022
+// Feb 2023
 //
 
 #ifndef SAM14_BIG_THREE_STUDENT_H
@@ -12,7 +12,7 @@ class Student       // Student class defined in same file here for ease of readi
 {
 private:
     std::string name;
-    double* location;	// GPS location, using array of two double values, latitude and longitude
+    double* location;	// GPS location stored as array of two double values, [latitude and longitude]
 
     // Note: Dynamically allocated memory used here for purpose of illustrating concepts.
     // (A standard array could be used for the location as it doesn't change in size.)
@@ -55,8 +55,9 @@ public:
     // However, they are declared as FRIEND functions in the header file, which gives the functions
     // direct access to the fields (member data).
 
-    friend std::ostream& operator << (std::ostream& out, const Student& c); // insertion operator
 
+    // stream operators
+    friend std::ostream& operator << (std::ostream& out, const Student& c); // insertion operator
     friend std::istream& operator >> (std::istream& in, Student& c);        // extraction operator
 
     void printStudent() ;
