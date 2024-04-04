@@ -121,7 +121,9 @@ ostream& operator<< (ostream& out, const Student& student)
 }
 
 
-
+// Stream Insertion operator
+//    Invoked as follows:   cin >> studentObject;
+//
 istream& operator>> (istream& in, Student& student)
 {
     cout << "Enter student name: ";
