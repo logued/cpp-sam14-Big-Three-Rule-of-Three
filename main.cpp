@@ -1,4 +1,4 @@
-/* Student Class				April 2022
+/* Student Class				Apr 2024
 
 Rule of Three (the Big Three) - (now the Big Five with Modern C++)
 
@@ -25,7 +25,7 @@ RULE:  (The Rule of Three)
  
  Usually, we don't want this, and instead, we want each object to
  have its own copy of the object pointed to. Therefore, we must write
- a Copy Constructor in the class, that will dynamically
+ a Copy Constructor in the class that will dynamically
  allocate its own block of memory to store a copy of the dynamically
  allocated data in the source object.
 
@@ -47,8 +47,9 @@ RULE:  (The Rule of Three)
  allocate memory in the destination, if it doesn't already exist)
   
  */
+#include "Student.h"
 #include<iostream>
-#include "student.h"
+
 using namespace std;
 
 int main()
@@ -69,6 +70,8 @@ int main()
 	s1.printStudent();
 
 	Student s3 = s1; // also calls copy constructor (and NOT the assignment operator !!)
+                    // as s3 is being constructed and did not previously exist.
+
 	cout << "Student s3 = s1;  - calls Copy Constructor, so s3 = ";
 	s3.printStudent();
 
@@ -78,7 +81,7 @@ int main()
 	s4.printStudent();
 
 	// chaining of assignments is allowed (this is why we return "*this" from the overloaded "operator=" )
-	// s4 = s3 = s2 = s1;  // sets them all to value of s1
+	// s4 = s3 = s2 = s1;  // sets them all to value of s1; evaluated Right to Left
 
     cout << "Using stream insertion operator>> for Student:";
     Student s5;

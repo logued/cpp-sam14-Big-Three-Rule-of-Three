@@ -1,5 +1,5 @@
 //
-// April 2022
+// April 2024
 //
 
 #ifndef SAM14_BIG_THREE_STUDENT_H
@@ -39,8 +39,9 @@ public:
     // Destructor.
     // When each Student object goes out of scope, or is deleted,
     // its destructor is called.
-    // This is your chance to delete any dynamically allocated memory that
-    // has been allocated by this object. Omitting this will cause memory leaks.
+    // This is our chance to delete any dynamically allocated memory that
+    // has been allocated by (or is owned by) this object.
+    // Omitting this will cause memory leaks.
     //
     ~Student() ;
 
