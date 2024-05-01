@@ -1,6 +1,9 @@
 //
 //  Rule of Three       --       April 2024
 //
+// If a class declares a pointer field, then you usually need to
+// implement the Big-3
+//
 
 #include "Student.h"
 #include <iostream>
@@ -8,6 +11,7 @@
 
 using namespace std;
 
+// Constructor
 Student::Student(string name, double latitude, double longitude) {
     this->name = name;
 
@@ -17,9 +21,9 @@ Student::Student(string name, double latitude, double longitude) {
     this->location[1] = longitude;
 }
 
-Student::Student()    // default constructor
+Student::Student()    // No argument constructor
 {
-    this->name = "John Doe";
+    this->name = ""; // empty string
     this->location = new double[2];    // dynamically allocate an array of 2 doubles from the Heap
     // (could also be a class object or any resource)
     this->location[0] = 0.0;
@@ -27,21 +31,20 @@ Student::Student()    // default constructor
 }
 
 // Copy constructor
-// Accepts one Student object as a parameter (the source) and
-// copies the data from the source into the Student object
-// being constructed (the destination).
+// Accepts one Student object as a parameter (the argument) and
+// copies the data from the other student into the Student object
+// being constructed ('this' student).
 // If the source contains data in dynamically allocated memory (on Heap) then
-// new memory must be allocated in the destination object to store that data.
+// new memory must be allocated in this object to store a copy of that data.
 //
-Student::Student(const Student &source) {
+Student::Student(const Student& otherStudent) {
     cout << "... Student Copy Constructor was called." << endl;
-    this->name = source.name;
-
-    this->location = new double[2];    // dynamically allocate a new block of memory
-    // to hold a copy of the location data
-
-    this->location[0] = source.location[0];    // copy the location data
-    this->location[1] = source.location[1];
+    this->name = otherStudent.name;
+    // dynamically allocate a new block of memory
+    // to hold a copy of the location
+    this->location = new double[2];
+    this->location[0] = otherStudent.location[0];    // copy the location data
+    this->location[1] = otherStudent.location[1];
 }
 
 void Student::printStudent() {
@@ -56,8 +59,8 @@ void Student::setLocation(double latitude, double longitude) {
 // Destructor.
 // When each Student object goes out of scope, or is deleted,
 // its destructor is called.
-// This is your chance to delete any dynamically allocated memory that
-// has been allocated by this object. Omitting this will cause memory leaks.
+// This is the chance for this object to delete any dynamically allocated memory that
+// has been allocated by this object. Omitting this may result in memory leaks.
 //
 Student::~Student() {
     cout << "... Student Destructor ~Student() was called." << endl;
@@ -75,17 +78,17 @@ Student::~Student() {
 // belonging to the source object, is properly copied to dynamically allocated memory
 // belonging to the destination object.
 //
-Student &Student::operator=(const Student &otherStudent) {
+Student& Student::operator=(const Student& otherStudent) {
     cout << "... Student Overloaded assignment operator= was called." << endl;
 
     // self-assignment guard i.e. no need to do anything if someone uses s1 = s1;
-    if (this == &otherStudent)
-        return *this;            // reference to same object
+    if (this == &otherStudent)   // if (address of this object == address of other object)
+        return *this;            // return reference to this object
 
-    // copy data from the source (rhs) to this object - the destination (lhs)
+    // copy data from the other object (rhs) into this object - the destination (lhs)
     this->name = otherStudent.name;
 
-    // must make a new location object to store a copy of other student location
+    // must make a new location object (array of 2 doubles) to store a copy of other student location
     if (this->location == nullptr)        // allocate memory if it doesn't already exist
         this->location = new double[2];
 
@@ -93,8 +96,8 @@ Student &Student::operator=(const Student &otherStudent) {
         this->location[i] = otherStudent.location[i];  // copy the 2 location values
     }
 
-    // return this new object so that we can 'chain' this operator (e.g. "s1=s2=s3")
-    return *this;   // returns this Student object
+    // return this newly updated object so that we can 'chain' this operator (e.g. "s1=s2=s3")
+    return *this;   // returns (reference to) this Student object
 }
 
 /* the stream insertion "operator<<" is invoked by the following pattern :
@@ -126,11 +129,11 @@ ostream& operator<< (ostream& out, const Student& student)
 //
 istream& operator>> (istream& in, Student& student)
 {
-    cout << "Enter student name: ";
+    cout << "Enter student name: " << endl;
     cin >> student.name;
-    cout << "Enter location latitude: ";
+    cout << "Enter location latitude: "<< endl;
     cin >> student.location[0];
-    cout << "Enter location longitude: ";
+    cout << "Enter location longitude: " << endl;
     cin >> student.location[1];
     cout << endl;
 }

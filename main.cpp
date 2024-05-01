@@ -85,14 +85,14 @@ int main()
 
     cout << "Using stream insertion operator>> for Student:";
     Student s5;
-    cin >> s5;
+    //cin >> s5;  // some issue with this stream insertion operator - TODO
     cout << "Print s5:\n " << s5 << endl;
 
 	Student* pStudent = new Student("Jane", 54.10324, -6.41667);  // dynamically allocate object
 
 	pStudent->printStudent();
 
-    cout << "Print the dynamically allocate student using *pStudent: " << *pStudent << endl;
+    cout << "Print the dynamically allocate student using *pStudent: \n" << *pStudent << endl;
 
 	delete pStudent;	// free up dynamically allocated student,
                         // ~Student() destructor is called when we delete the student memory
