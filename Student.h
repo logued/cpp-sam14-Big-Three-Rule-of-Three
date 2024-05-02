@@ -60,9 +60,9 @@ public:
     // However, they are declared as FRIEND functions in the header file, which gives the functions
     // direct access to the fields (member data).
 
-    friend std::ostream& operator << (std::ostream& out, const Student& c); // insertion operator
+    friend std::ostream& operator << (std::ostream& out, const Student& student); // insertion operator
 
-    friend std::istream& operator >> (std::istream& in, Student& c);        // extraction operator
+    friend std::istream& operator >> (std::istream& in, Student& student);        // extraction operator
 
 };
 
