@@ -13,6 +13,8 @@ using namespace std;
 
 // Constructor
 Student::Student(string name, double latitude, double longitude) {
+
+    cout << "... Student Constructor was called." << endl;
     this->name = name;
 
     this->location = new double[2];    // dynamically allocate an array of 2 doubles from the Heap
@@ -23,6 +25,8 @@ Student::Student(string name, double latitude, double longitude) {
 
 Student::Student()    // No argument constructor
 {
+
+    cout << "... Student No-Argument Constructor was called." << endl;
     this->name = ""; // empty string
     this->location = new double[2];    // dynamically allocate an array of 2 doubles from the Heap
     // (could also be a class object or any resource)
@@ -48,9 +52,17 @@ Student::Student(const Student& otherStudent) {
 }
 
 void Student::printStudent() {
+    // Can be used, but better to use the operator<<
     cout << this->name << ", " << location[0] << ", " << location[1] << endl;
 }
 
+/**
+ * Changing the location requires us to accept new lat and lng values
+ * and update the elements of the array (on HEAP) using the location pointer.
+ *
+ * @param latitude
+ * @param longitude
+ */
 void Student::setLocation(double latitude, double longitude) {
     this->location[0] = latitude;
     this->location[1] = longitude;
@@ -103,7 +115,7 @@ Student& Student::operator=(const Student& otherStudent) {
 /* the stream insertion "operator<<" is invoked by the following pattern :
    "outputStream << Student"  e.g. cout << s1;
    Note that this is somewhat equivalent to the .toString() method in Java.
-   It allows us to 'dump' and object's contents to the output stream.
+   It allows us to 'output' and object's contents as a stream of characters.
 */
 
 // Parameters:   << ("output stream", "reference to a constant Student object")
@@ -116,9 +128,9 @@ ostream& operator<< (ostream& out, const Student& student)
     // (So, we don't need to call getters and setters)
 
     // code to implement the operator<< functionality
-    out << "Name: " << student.name << endl;
-    out << "Location - Latitude : "  << student.location[0] << endl;
-    out << "Location - Longitude: "  << student.location[1] << endl;
+    out << "Name: " << student.name << "   ";
+    out << "Location - Latitude : "  << student.location[0] << "   ";
+    out << "Location - Longitude: "  << student.location[1] << "   ";
 
     return out;
 }
@@ -129,11 +141,14 @@ ostream& operator<< (ostream& out, const Student& student)
 //
 istream& operator>> (istream& in, Student& student)
 {
+    string strTemp;
     cout << "Enter student name: " << endl;
-    cin >> student.name;
+    in >> student.name;
     cout << "Enter location latitude: "<< endl;
-    cin >> student.location[0];
+    in >> strTemp;
+    student.location[0] = stod(strTemp);
     cout << "Enter location longitude: " << endl;
-    cin >> student.location[1];
-    cout << endl;
+    in >> strTemp;
+    student.location[1] = stod(strTemp);
+    return in;
 }

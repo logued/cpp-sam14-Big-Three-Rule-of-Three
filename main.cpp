@@ -54,15 +54,13 @@ using namespace std;
 
 int main()
 {
-	cout << "Creating Student object s1" << endl;
+	cout << "Creating Student object s1 (will be created on Stack)" << endl;
 	Student s1("Tom", 54.10324, -6.41667);		// Normal constructor is called here
-	cout << "s1 = " << endl;
-	//s1.printStudent();
-    cout << s1 << endl;
+    cout << s1 << endl;     // uses overloaded operator<< to output student
 
-	Student s2(s1); // calls copy constructor to initialize s2 fields from s1 fields
-	cout << "Student s2(s1); calls the Copy constructor, so s2 = ";
-	s2.printStudent();
+    cout << "Student s2(s1); --calls the Copy constructor,  s2 = " << endl;
+    Student s2(s1); // calls Copy Constructor to initialize fields in s2 from s1 fields
+    cout << s2 << endl;
 
 	cout << "Changing location in s1." << endl;
 	s1.setLocation(77.77777, 88.88888);	// change the location fields of s1
@@ -75,33 +73,37 @@ int main()
 	cout << "Student s3 = s1;  - calls Copy Constructor, so s3 = ";
 	s3.printStudent();
 
+    cout << "Creating s4 (on Stack)" << endl;
 	Student s4;
-	s4 = s1;			// overloaded assignment operator= is called in this case, (s4 has already been constructed)
-	cout << "s4 = s1; calls overloaded assignment operator= , so s4 = ";
-	s4.printStudent();
+    cout << "s4 = s1; calls overloaded assignment operator= , so s4 = " << endl;
+    s4 = s1;			// overloaded assignment operator= is called in this case, (s4 has already been constructed)
+	cout << s4 << endl;
 
 	// chaining of assignments is allowed (this is why we return "*this" from the overloaded "operator=" )
 	// s4 = s3 = s2 = s1;  // sets them all to value of s1; evaluated Right to Left
 
     cout << "Using stream insertion operator>> for Student:";
     Student s5;
-    //cin >> s5;  // some issue with this stream insertion operator - TODO
+    cin >> s5;
     cout << "Print s5:\n " << s5 << endl;
 
-	Student* pStudent = new Student("Jane", 54.10324, -6.41667);  // dynamically allocate object
+    // Dynamically allocate a Student object on the HEAP
+	Student* pStudent = new Student("Dynamic Dave", 54.10324, -6.41667);  // dynamically allocate object
 
-	pStudent->printStudent();
+    cout << "Print the dynamically allocate student using *pStudent: " << endl;
+	cout << *pStudent << endl;  // dereference pointer to print object
 
-    cout << "Print the dynamically allocate student using *pStudent: \n" << *pStudent << endl;
-
+    cout << " Deleting pStudent - (student object on Heap) - so expect to see its destructor called." << endl;
 	delete pStudent;	// free up dynamically allocated student,
                         // ~Student() destructor is called when we delete the student memory
 	pStudent = nullptr;
 
-    // On return , the Students objects that were automatically created on the stack
+
+    // On return ,the Students objects that were automatically created on the stack
     // are now automatically removed from the stack. The destructor for each Student
     // object is called just before it is removed.
 
+    cout << "Exiting the main function(), expect to see destructors called as stack objects are destroyed." << endl;
 	return 0;
 
 	//TODO - study the output, and note the calls to the destructor ~Student() as each
